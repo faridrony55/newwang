@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body{
+      background-color: #0a0a0a;
+    }
+    .form-control { 
+    background-color: #fff0; 
+    border: 1px solid #aaa;  
+        padding: 12px 12px 12px 12px; 
+        height: auto; 
+  }
+  #result {
+   position: absolute;
+   width: 100%; 
+   cursor: pointer;
+   overflow-y: auto; 
+   box-sizing: border-box;
+   z-index: 1001;
+  }
+  .link-class:hover{
+   background-color:#0a0a0a ;
+  }
+  .list-group-item { 
+       background-color: #101010;
+    border: 0;
+    border-top: 1px solid #dddddd38;
+}
+.list-group-item.link-class{
+  display: flex;  
+  flex-wrap: wrap;  
+  justify-content: space-between;      
+}
+.list-group-item.link-class span{
+  max-width: 100%; flex-grow: 1;
+} 
+.iframe h5{
+  color: #fff;
+    font-size: 18px; 
+}
+  </style>
+ </head>
+ <body>
+   
+  <div class="container" style="padding:50px 250px;">
+  <form role="form">
+        <div class="form-group">
+          <input type="input" class="form-control input-lg" id="txt-search" placeholder="Type your search character">
+        </div>
+  </form>
+  <div id="filter-records"></div>
+  </div>
+
+
+
+ </body>
+</html>
+
+ 
+
+<script>
+$(function(){
+ $('#txt-search').keyup(function(){
+            var searchField = $(this).val();
+      if(searchField === '')  {
+        $('#filter-records').html('');
+        return;
+      }
+      
+            var regex = new RegExp(searchField, "i");
+            var output = '<div class="row">';
+            var count = 1;
+        $.each("a.json", function(key, val){
+        if ((val.employee_salary.search(regex) != -1) || (val.employee_name.search(regex) != -1)) {
+          output += '<div class="col-md-6 well">';
+          output += '<div class="col-md-3"><img class="img-responsive" src="'+val.profile_image+'" alt="'+ val.employee_name +'" /></div>';
+          output += '<div class="col-md-7">';
+          output += '<h5>' + val.employee_name + '</h5>';
+          output += '<p>' + val.employee_salary + '</p>'
+          output += '</div>';
+          output += '</div>';
+          if(count%2 == 0){
+          output += '</div><div class="row">'
+          }
+          count++;
+        }
+        });
+        output += '</div>';
+        $('#filter-records').html(output);
+        });
+});
+</script>
